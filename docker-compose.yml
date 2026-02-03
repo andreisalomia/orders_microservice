@@ -1,5 +1,6 @@
 # https://medium.com/@victoria.kruczek_15509/create-a-local-database-with-docker-compose-and-view-it-in-mysql-workbench-974aee047874
 # https://iamvickyav.medium.com/mysql-init-script-on-docker-compose-e53677102e48
+# https://semaphore.io/community/tutorials/dockerizing-a-node-js-web-application
 
 services:
   db:
@@ -13,6 +14,23 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - app-network
+
+  server:
+    build: src/
+    container_name: orders_microservice_server
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    depends_on:
+      - db
+    networks:
+      - app-network
 
 volumes:
   mysql_data:
+
+networks:
+  app-network:
