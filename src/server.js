@@ -1,26 +1,32 @@
+require('dotenv').config();
 const express = require('express');
+const db = require('./config/database');
+
+
+const port = process.env.PORT;
 const app = express();
-const port = 3000;
+app.use(express.json());
 
-const mysql = require('mysql2');
+let connection;
 
-let con = mysql.createConnection({
-    host: "db",
-    user: "root",
-    password: "pass",
-    port: "3306",
-    database: "app_db"
+app.get('/health', async (req, res) => {
+    try {
+        const [tables] = await connection.query(`SELECT TABLE_NAME FROM information_schema.tables WHERE table_schema = ? AND table_name = ?`,
+            [process.env.DB_NAME, process.env.TABLE_NAME]);
+        if (tables.length === 0) {
+            return res.status(500).json({ status: 'unhealthy', error: `Table ${process.env.TABLE_NAME} does not exist` });
+        }
+        res.status(200).json({ status: 'healthy' });
+    } catch (error) {
+        res.status(500).json({ status: 'unhealthy', error: error.message });
+    }
 });
 
-con.connect(function(err) {
-    if (err) throw err;
-    console.log("Connected to MySQL!");
-});
+async function start() {
+    connection = await db.connect();
+    app.listen(port, () => {
+        console.log(`Server running on port ${port}`);
+    });
+}
 
-app.get('/', (req, res) => {
-    res.send('Hello World!');
-});
-
-app.listen(port, () => {
-    console.log(`Server is running at http://localhost:${port}`);
-});
+start();
