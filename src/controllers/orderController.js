@@ -1,8 +1,15 @@
 const orderService = require('../services/orderService');
+const { validateOrder } = require('../utils/orderValidation');
 
 async function createOrder(req, res) {
     try {
-        const order = await orderService.createOrder(req.connection, req.body);
+        const { value, error } = validateOrder(req.body);
+
+        if (error) {
+            return res.status(400).json({ error: error.details });
+        }
+
+        const order = await orderService.createOrder(req.connection, value);
         res.status(201).json(order);
     } catch (err) {
         res.status(500).json({ error: err.message });

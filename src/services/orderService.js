@@ -6,7 +6,7 @@ async function createOrder(connection, orderData) {
 }
 
 async function getAllOrders(connection) {
-    const [rows] = await orderRepository.findAll(connection);
+    const rows = await orderRepository.findAll(connection);
     return rows;
 }
 

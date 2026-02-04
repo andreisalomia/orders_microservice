@@ -23,6 +23,9 @@ app.get('/health', async (req, res) => {
         if (tables.length === 0) {
             return res.status(500).json({ status: 'unhealthy', error: `Table ${process.env.TABLE_NAME} does not exist` });
         }
+
+        await connection.query(`SELECT 1 FROM ${process.env.TABLE_NAME} LIMIT 1`);
+
         res.status(200).json({ status: 'healthy' });
     } catch (error) {
         res.status(500).json({ status: 'unhealthy', error: error.message });

@@ -29,3 +29,9 @@ Problema simpla, scrie solutia chiar in eroare: nu am folosit require('mysql2/pr
 Problema asta a aparut pentru ca am scris middleware care ataseaza conexiunea la request dupa ce am atasat rutele la app. Le-am inversat si a mers.
 
 ![Problema 4](./images/prob4.png)
+
+## Problema 5
+
+Am facut un get pentru toate comenzile, dar nu returna decat prima comanda. Problema era ca in orderRepository destructuram rezultatul query-ului cu
+const [rows] = await connection.query('SELECT * FROM orders') si returnam rows, iar in serviciu foloseam iar const [rows] care il
+destructura din nou returnand doar primul element.
