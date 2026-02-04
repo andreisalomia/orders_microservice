@@ -1,4 +1,5 @@
 require('dotenv').config();
+const logger = require('./logger');
 
 const mysql = require('mysql2/promise');
 
@@ -12,7 +13,7 @@ async function connect() {
         port: process.env.DB_PORT,
         database: process.env.DB_NAME
     });
-    console.log("Connected to MySQL.");
+    logger.info('Database connected successfully.');
     return connection;
 }
 
