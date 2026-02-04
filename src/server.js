@@ -1,13 +1,20 @@
 require('dotenv').config();
 const express = require('express');
 const db = require('./config/database');
-
+const orderRoutes = require('./routes/orderRoutes');
 
 const port = process.env.PORT;
 const app = express();
 app.use(express.json());
 
 let connection;
+
+app.use((req, res, next) => {
+    req.connection = connection;
+    next();
+});
+
+app.use('/orders', orderRoutes);
 
 app.get('/health', async (req, res) => {
     try {

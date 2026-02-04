@@ -14,7 +14,7 @@ A doua problema este faptul ca serverul porneste inaintea bazei de date, asa ca 
 
 Eroarea de mai jos e cauzata de /health in care incercam sa fac selectul asta: `SELECT ${process.env.TABLE_NAME} FROM ${process.env.DB_NAME}`. Evident a fost o
 eroare logica pentru ca statementul devine "Select orders from app_db" si nu are sens pentru ca app_db e numele bazei de date, nu un tabel. Am gasit aici solutii mai
-clare cum sa verific existenta unui tabel ([link](https://five.co/blog/mysql-check-if-table-exists/))
+clare cum sa verific existenta unui tabel ([verificare-tabel](https://five.co/blog/mysql-check-if-table-exists/))
 
 ![Problema 2](./images/prob2.png)
 
@@ -25,3 +25,7 @@ orders_microservice_server  | You have tried to call .then(), .catch(), or invok
 Problema simpla, scrie solutia chiar in eroare: nu am folosit require('mysql2/promise') ci doar 'mysql2'.
 
 ## Problema 4
+
+Problema asta a aparut pentru ca am scris middleware care ataseaza conexiunea la request dupa ce am atasat rutele la app. Le-am inversat si a mers.
+
+![Problema 4](./images/prob4.png)
