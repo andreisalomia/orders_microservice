@@ -13,7 +13,6 @@ describe('Orders API', () => {
 
     afterAll(async () => {
         await api.delete('/orders/test123');
-        await api.delete('/orders/test456');
     });
 
     test('GET /health - returns 200', async () => {
