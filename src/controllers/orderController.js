@@ -23,7 +23,7 @@ async function createOrder(req, res) {
 
         if (order) {
             if (checkSamePayload(value, order)) {
-                return res.status(200).json(order);
+                return res.status(200).send();
             } else {
                 logger.warn(`Conflict error: Order ID ${value.order_id} already exists with different payload`);
                 return res.status(409).json({ error: 'Order with this ID already exists with different payload' });
