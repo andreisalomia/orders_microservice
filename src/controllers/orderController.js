@@ -68,7 +68,7 @@ async function getOrder(req, res) {
 async function deleteOrder(req, res) {
     try {
         const deleted = await orderService.deleteOrder(req.connection, req.params.order_id);
-        if (!deleted) {
+        if (deleted.affectedRows === 0) {
             logger.warn(`Order ID ${req.params.order_id} not found for deletion`);
             return res.status(404).json({ error: 'Order not found' });
         }

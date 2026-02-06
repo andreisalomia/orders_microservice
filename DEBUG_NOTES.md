@@ -35,3 +35,7 @@ Problema asta a aparut pentru ca am scris middleware care ataseaza conexiunea la
 Am facut un get pentru toate comenzile, dar nu returna decat prima comanda. Problema era ca in orderRepository destructuram rezultatul query-ului cu
 const [rows] = await connection.query('SELECT * FROM orders') si returnam rows, iar in serviciu foloseam iar const [rows] care il
 destructura din nou returnand doar primul element.
+
+## Problema 6
+
+In delete functia care intoarce randurile afectate returneaza un obiect indiferent daca se sterge sau nu ceva. Faceam verificarea if(!deleted) care nu era corecta pentru ca deleted era un obiect oricum. A trebuit sa folosesc deleted.affectedRows === 0 pentru a vedea daca s-a sters ceva sau nu.
